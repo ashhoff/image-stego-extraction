@@ -44,6 +44,21 @@ Copied the clean hidden image out with a proper name and kept the original extra
 
 Committed as work/hidden_cat.jpg.
 
+## 7. HxD Verification
+
+To back up the automated results, I opened the original cat_photo.jpg in HxD. Using Ctrl+G (“Go To”), I jumped to the offsets that binwalk reported.
+
+- At offset 0x0, the file begins with FF D8 FF — the JPEG Start of Image marker.
+- At offset 0x65C14, another FF D8 FF sequence appears, showing the start of an embedded JPEG.
+- At offset 0xF3D54, yet another FF D8 FF sequence is visible, confirming the second embedded JPEG.
+
+- Note: In JPEG files:
+
+- FF D8 FF = SOI marker (Start of Image)
+- FF D9 = EOI marker (End of Image)
+
+This confirms binwalk’s findings by showing the JPEG signatures inside the hex.
+
 ## Findings
 - The “normal” JPEG had two additional JPEGs embedded at offsets 0x65C14 and 0xF3D54.
 - The object at 0xF3D54 is a valid, viewable image (now preserved as hidden_cat.jpg).
